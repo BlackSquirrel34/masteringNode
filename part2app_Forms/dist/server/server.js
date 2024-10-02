@@ -31,24 +31,23 @@ const express_1 = __importDefault(require("express"));
 const testHandler_1 = require("./testHandler");
 const http_proxy_1 = __importDefault(require("http-proxy"));
 const helmet_1 = __importDefault(require("helmet"));
-//import { registerCustomTemplateEngine } from "./custom_engine";
 const express_handlebars_1 = require("express-handlebars");
 const helpers = __importStar(require("./template_helpers"));
+const forms_1 = require("./forms");
 const port = 5000;
 const expressApp = (0, express_1.default)();
 const proxy = http_proxy_1.default.createProxyServer({
     target: "http://localhost:5100", ws: true
 });
-//registerCustomTemplateEngine(expressApp);
 expressApp.set("views", "templates/server");
 expressApp.engine("handlebars", (0, express_handlebars_1.engine)());
 expressApp.set("view engine", "handlebars");
 expressApp.use((0, helmet_1.default)());
 expressApp.use(express_1.default.json());
+(0, forms_1.registerFormMiddleware)(expressApp);
+(0, forms_1.registerFormRoutes)(expressApp);
 expressApp.get("/dynamic/:file", (req, resp) => {
-    resp.render(`${req.params.file}.handlebars`, { message: "Hello template", req,
-        helpers: { ...helpers }
-    });
+    resp.render(`${req.params.file}.handlebars`, { message: "Hello template", req, helpers: { ...helpers } });
 });
 expressApp.post("/test", testHandler_1.testHandler);
 expressApp.use(express_1.default.static("static"));
