@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>{{ @style("bootstrap.min.css") }}</head>
+    <body>
+        <a class="btn btn-primary m-2"
+            href="/dynamic/counter?c={{ Number(req.query.c ?? 0) + 1}}">
+                Increment
+        </a>
+        <div>
+            {{ @conditional("(req.query.c ?? 0) % 2", "odd", "even") }}       
+        </div>
+    </body>
+</html>
+
+<!-- 
+    This template contains an anchor element (the a tag) that, when clicked, requests a new HTML document from the backend server using a URL that contains a query string parameter named c. The value of c included in the request URL is always one more than the value displayed to the user, such that clicking the button has the effect of incrementing the counter
+
+-->
